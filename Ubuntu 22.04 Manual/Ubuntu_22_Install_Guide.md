@@ -143,8 +143,8 @@ rm -rf /etc/cloud/  /var/lib/cloud/
 
 ```bash
 # 기존 저장소 주소보다 빠른 mirror.kakao.com 으로 변경
-perl -pi -e 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
-perl -pi -e 's/security.ubuntu.com/mirror.kakao.com/g'   /etc/apt/sources.list
+perl -pi -e 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list.d/ubuntu.sources
+perl -pi -e 's/security.ubuntu.com/mirror.kakao.com/g'   /etc/apt/sources.list.d/ubuntu.sources
 cat /etc/apt/sources.list | grep -v "#\|^$"
 ```
 
@@ -155,7 +155,7 @@ cat /etc/apt/sources.list | grep -v "#\|^$"
 ```bash
 apt-get update
 apt-get -y install vim nfs-common rdate xauth firefox gcc make tmux wget figlet net-tools
-apt-get -y install xfsprogs ntfs-3g aptitude lvm2 dstat curl npm mlocate 
+apt-get -y install xfsprogs ntfs-3g aptitude lvm2 curl npm plocate util-linux-extra
 apt-get -y install dconf-editor gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
 apt-get -y install libzmq3-dev libcurl4-openssl-dev libxml2-dev snapd ethtool htop dnsutils
 apt-get -y install smartmontools
@@ -171,10 +171,6 @@ systemctl disable vmtoolsd.service
 systemctl disable ModemManager.service
 systemctl disable cups.service
 systemctl disable cups-browsed.service
-
-# Ubuntu Desktop (GUI) 환경을 사용할 경우 disable 하지 않습니다.
-systemctl disable NetworkManager.service
-systemctl stop    NetworkManager.service
 
 # IPMI가 있는 장치의 경우 ipmitool을 설치 합니다.
 # apt-get install -y ipmitool
@@ -201,8 +197,7 @@ export HISTTIMEFORMAT="20%y/%m/%d %T "
 EOF
 
 echo "export PS1='\[\e[1;46;30m\][\u@\h:\W]\\$\[\e[m\] '"   >>  /root/.bashrc
-# echo "export PS1='\[\e[1;47;30m\][\u@\h:\W]\\$\[\e[m\] '"   >>  /home/sonic/.bashrc
-echo "export PS1='\[\e[1;47;30m\][\u@\h:\W]\\$\[\e[m\] '"   >>  /home/kds/.bashrc
+echo "export PS1='\[\e[1;47;30m\][\u@\h:\W]\\$\[\e[m\] '"   >>  /home/temp_id/.bashrc
 
 # 변경사항 적용 및 불러오기
 source  /etc/profile
@@ -235,9 +230,8 @@ pip3 install --upgrade pip
 
 ```bash
 # Python 3.10에 사용할 패키지 설치
-#pip3 install --upgrade numpy scipy nose matplotlib pandas keras h5py cryptography tensorflow-gpu 
-pip3 install --upgrade numpy scipy nose matplotlib pandas keras h5py cryptography tensorflow
-pip3 install --upgrade torch torchvision
+pip3 install --upgrade numpy scipy nose matplotlib pandas keras h5py cryptography tensorflow --break-system-packages
+pip3 install --upgrade torch torchvision --break-system-packages
 ```
 
 ### # [10. 방화벽 설정](#목차)
@@ -258,7 +252,7 @@ ufw allow 8000/tcp
 
 perl -pi -e "s/#Port 22/Port 7777/g" /etc/ssh/sshd_config
 echo "AddressFamily inet" >> /etc/ssh/sshd_config
-systemctl restart sshd
+systemctl restart ssh
 ```
 
 ### # [11. 사용자 생성 테스트](#목차)
