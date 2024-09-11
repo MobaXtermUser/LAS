@@ -125,7 +125,7 @@ sed -i '14a bash /root/LAS/Linux_Auto_Script.sh' /etc/rc.d/rc.local
 NIC=$(ip a | grep 'state UP' | cut -d ":" -f 2 | tr -d ' ')
 # 부팅시 화면에 부팅 기록을 출력 및 IPv6 비활성화를 위해 설정 변경.
 sed -i  's/GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="ipv6.disable=1 /' /etc/default/grub
-sed -i  '/IPV6/d' /etc/sysconfig/network-scripts/ifcfg-${NIC}
+sed -i '/^\[ipv6\]$/,+3d' /etc/NetworkManager/system-connections/${NIC}.nmconnection
 
 # Nvidia Driver 설치시 nouveau 제거
 echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
@@ -209,7 +209,7 @@ echo " "                                >>  /etc/profile
 echo "# Add Timestamp to .bash_history "                    >>  /etc/profile
 echo 'export HISTTIMEFORMAT="20%y/%m/%d %T "'               >>  /etc/profile
 echo "export PS1='\[\e[1;46;30m\][\u@\h:\W]\\$\[\e[m\] '"   >>  /root/.bashrc
-echo "export PS1='\[\e[1;47;30m\][\u@\h:\W]\\$\[\e[m\] '"   >>  /home/kds/.bashrc
+echo "export PS1='\[\e[1;47;30m\][\u@\h:\W]\\$\[\e[m\] '"   >>  /home/temp_id/.bashrc
 
 # 변경사항 적용 및 불러오기
 source  /etc/profile
@@ -236,7 +236,7 @@ hwclock
 
 ```bash
 # Rocky linux 의 경우 3.6버전의 devel만 사용 2버전은 사용X
-yum -y install python36-devel
+yum -y install python3-devel
 ```
 
 ### # [9. 파이썬 패키지 설치](#목차)
@@ -245,7 +245,6 @@ yum -y install python36-devel
 # Python 3.6에 사용할 패키지 설치
 python3 -m pip install --upgrade pip 
 python3 -m pip install numpy scipy nose matplotlib pandas keras 
-#python3 -m pip install --upgrade tensorflow-gpu==1.13.1 
 python3 -m pip install --upgrade tensorflow
 python3 -m pip install torch torchvision 
 ```
@@ -327,7 +326,7 @@ reboot
 select CUDAV in 11-0 11-1 11-2 11-3 11-4 11-5; do echo "Select CUDA Version : $CUDAV" ; break; done
 
 # Nvidia 저장소 생성 (Cuda,cudnn 설치를 위해)
-dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel8/x86_64/cuda-rhel8.repo
+dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo
 wget https://developer.download.nvidia.com/compute/machine-learning/repos/rhel8/x86_64/nvidia-machine-learning-repo-rhel8-1.0.0-1.x86_64.rpm
 yum -y install nvidia-machine-learning-repo-rhel8-1.0.0-1.x86_64.rpm
 
@@ -341,8 +340,8 @@ yum -y install libXi-devel mesa-libGLU-devel libXmu-devel libX11-devel freeglut-
 ```bash
 # CUDA 설치
 
-rpm --import http://developer.download.nvidia.com/compute/cuda/repos/rhel7/x86_64/D42D0685.pub
-yum -y install kmod-nvidia-latest-dkms
+rpm --import http://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/D42D0685.pub
+dnf -y module install nvidia-driver:latest-dkms
 
 yum -y install cuda-$CUDAV
 
@@ -374,7 +373,7 @@ yum -y install libnccl*
 
 ```bash
 ## R 설치를 위한 Tool 및 r-studio 설치
-dnf config-manager --set-enabled powertools 
+dnf config-manager --set-enabled crb
 yum -y install R 
 yum install libcurl-devel libxml2-devel 
 wget https://download2.rstudio.org/server/rhel8/x86_64/rstudio-server-rhel-2022.02.0-443-x86_64.rpm  
@@ -383,7 +382,7 @@ yum -y install rstudio-server-rhel-2022.02.0-443-x86_64.rpm
 ## jupyter install
 python3 -m pip install jupyterhub jupyterlab notebook 
 curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash - 
-sed -i '/failover/d'  /etc/yum.repos.d/nodesource-el8.repo 
+sed -i 's/gpgcheck=1/gpgcheck=0/' /etc/yum.repos.d/nodesource-nodejs.repo
 yum -y install nodejs 
 npm install -g configurable-http-proxy
 
@@ -394,15 +393,13 @@ sed -i '356a c.JupyterHub.port = 8000' /etc/jupyterhub/jupyterhub_config.py
 sed -i '358a c.LocalAuthenticator.create_system_users = True' /etc/jupyterhub/jupyterhub_config.py
 sed -i '359a c.Authenticator.add_user_cmd = ['adduser', '--force-badname', '-q', '--gecos', '""', '--disabled-password']' /etc/jupyterhub/jupyterhub_config.py
 sed -i '384a c.JupyterHub.proxy_class = 'jupyterhub.proxy.ConfigurableHTTPProxy'' /etc/jupyterhub/jupyterhub_config.py
-sed -i '824a c.Authenticator.admin_users = {"kds"}' /etc/jupyterhub/jupyterhub_config.py
+sed -i '824a c.Authenticator.admin_users = {"temp_id"}' /etc/jupyterhub/jupyterhub_config.py
 sed -i '929a c.Spawner.default_url = '/lab'' /etc/jupyterhub/jupyterhub_config.py
 
 ## jupyterhub service 설정 파일 복사
 git clone https://github.com/dasandata/LAS
 mv /root/LAS/jupyterhub.service /lib/systemd/system/
-mv /root/LAS/jupyterhub /etc/init.d/
 chmod 777 /lib/systemd/system/jupyterhub.service 
-chmod 755 /etc/init.d/jupyterhub 
 systemctl daemon-reload 
 systemctl enable jupyterhub.service 
 systemctl restart jupyterhub.service 
@@ -411,10 +408,47 @@ R CMD BATCH /root/LAS/r_jupyterhub.R
 
 ### ===== 서버 전용 설치 진행 순서 ===== 
 
-### # [17. 서버 전용 MSM 설치](#목차)
+
+### ===== Dell 서버 전용 설치 순서 =====
+
+### # [17. Dell 전용 OMSA설치](#목차)
+#### ## Dell 서버의 경우 원격 제어를 위한 OMSA (OpenManage Server Administrator) 를 설치 합니다.
+
+```bash
+perl -p -i -e '$.==20 and print "exclude = libsmbios smbios-utils-bin\n"' /etc/yum.repos.d/rocky.repo
+wget http://linux.dell.com/repo/hardware/dsu/bootstrap.cgi -O  ./dellomsainstall.sh
+sed -i -e "s/enabled=1/enabled=0/g" ./dellomsainstall.sh 
+bash ./dellomsainstall.sh
+rm -f ./dellomsainstall.sh
+yum -y install --enablerepo=dell-system-update_dependent -y srvadmin-all openssl-devel
+systemctl enable dataeng
+systemctl enable dsm_om_connsvc
+systemctl start dataeng
+systemctl start dsm_om_connsvc
+```
+
+### # [18. 서버 전용 MSM 설치](#목차)
 #### ## RAID DISK 관리 Tool인 Mega RAID Manager 를 설치 합니다. (RAID Card가 있을경우 사용 합니다.)
 
 ```bash
+yum install -y net-snmp net-snmp-utils
+
+cat << EOF >> /etc/systemd/system/vivaldiframeworkd.service
+[Unit]
+Description=Vivaldi Framework Service
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/vivaldiframeworkd start
+ExecStop=/etc/init.d/vivaldiframeworkd stop
+ExecReload=/etc/init.d/vivaldiframeworkd restart
+Environment="MSM_HOME=/usr/local/MegaRAID Storage Manager" "PRODUCTNAME=MegaRAID Storage Manager" "MSM_PRODUCT=MSM"
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 mkdir /tmp/raid_manager
 cd /tmp/raid_manager
 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/17.05.00.02_Linux-64_MSM.gz
@@ -427,24 +461,6 @@ systemctl enable vivaldiframeworkd.service
 cd
 ```
 
-### ===== Dell 서버 전용 설치 순서 =====
-
-### # [18. Dell 전용 OMSA설치](#목차)
-#### ## Dell 서버의 경우 원격 제어를 위한 OMSA (OpenManage Server Administrator) 를 설치 합니다.
-
-```bash
-perl -p -i -e '$.==20 and print "exclude = libsmbios smbios-utils-bin\n"' /etc/yum.repos.d/Rocky-BaseOS.repo
-wget http://linux.dell.com/repo/hardware/dsu/bootstrap.cgi -O  ./dellomsainstall.sh
-sed -i -e "s/enabled=1/enabled=0/g" ./dellomsainstall.sh 
-bash ./dellomsainstall.sh
-rm -f ./dellomsainstall.sh
-yum -y erase  tog-pegasus-libs
-yum -y install --enablerepo=dell-system-update_dependent -y srvadmin-all openssl-devel
-systemctl enable dataeng
-systemctl enable dsm_om_connsvc
-systemctl start dataeng
-systemctl start dsm_om_connsvc
-```
 
 ***
 # # END
