@@ -210,6 +210,7 @@ echo $HISTSIZE
 
 ```bash
 # time.bora.net 기준으로 시간 동기화
+timedatectl set-timezone Asia/Seoul
 rdate -s time.bora.net
 hwclock --systohc
 
