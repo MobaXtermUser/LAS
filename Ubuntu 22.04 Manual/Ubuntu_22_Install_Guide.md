@@ -267,7 +267,7 @@ reboot
 
 ```bash
 # 사용할 CUDA 버전을 선택합니다. (22.04는 11.7만 지원됨)
-select CUDAV in 11-7; do echo "Select CUDA Version : $CUDAV" ; break; done
+select CUDAV in 12-4; do echo "Select CUDA Version : $CUDAV" ; break; done
 
 # 자세한 Ubuntu 버전을 변수로 선언합니다.
 OS=$(lsb_release -isr |  tr -d "." | sed -e '{N;s/\n//}' | tr '[A-Z]' '[a-z]')
