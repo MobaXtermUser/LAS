@@ -245,12 +245,6 @@ ufw default deny
 ufw allow 22/tcp 
 ufw allow 7777/tcp 
 
-## R Server port
-ufw allow 8787/tcp 
-
-## JupyterHub port
-ufw allow 8000/tcp
-
 perl -pi -e "s/#Port 22/Port 7777/g" /etc/ssh/sshd_config
 echo "AddressFamily inet" >> /etc/ssh/sshd_config
 systemctl restart ssh
