@@ -219,15 +219,6 @@ date
 hwclock
 ```
 
-### # [8. 파이썬 설치](#목차)
-
-```bash
-# Python 3.10 pip 설치
-apt-get -y install python3-pip
-pip3 install --upgrade pip
-```
-
-
 
 ## ## 아래 부분을 진행 하기 전에 위 사항들이 적용 될 수 있게 재부팅을 진행 합니다.
 
