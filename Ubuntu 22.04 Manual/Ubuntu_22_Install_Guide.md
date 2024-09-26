@@ -250,34 +250,6 @@ echo "AddressFamily inet" >> /etc/ssh/sshd_config
 systemctl restart ssh
 ```
 
-### # [11. 사용자 생성 테스트](#목차)
-
-```bash
-adduser --disabled-login --gecos "" dasan
-usermod -G sudo dasan
-```
-
-### # [12. H/W 사양 체크](#목차)
-
-```bash
-# 기본적인 시스템 사양 체크를 진행합니다.
-dmidecode --type system | grep -v "^$\|#\|SMBIOS\|Handle\|Not"
-lscpu | grep -v "Flags\|NUMA|Vulnerability"
-dmidecode --type 16 | grep -v "dmidecode\|SMBIOS\|Handle"
-dmidecode --type memory | grep "Number Of Devices\|Size\|Locator\|Clock\|DDR\|Rank" | grep -v "No\|Unknown"
-cat /proc/meminfo | grep MemTotal
-free -h
-lspci | grep -i vga
-lspci | grep -i nvidia
-dmidecode | grep NIC
-lspci | grep -i communication
-dmesg | grep NIC
-dmidecode --type 39  | grep "System\|Name:\|Capacity"
-blkid
-uname -a
-```
-***
-<br/>
 
 ## ## 아래 부분을 진행 하기 전에 위 사항들이 적용 될 수 있게 재부팅을 진행 합니다.
 
