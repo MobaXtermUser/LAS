@@ -227,28 +227,6 @@ apt-get -y install python3-pip
 pip3 install --upgrade pip
 ```
 
-### # [9. 파이썬 패키지 설치](#목차)
-
-```bash
-# Python 3.10에 사용할 패키지 설치
-pip3 install --upgrade numpy scipy nose matplotlib pandas keras h5py cryptography tensorflow --break-system-packages
-pip3 install --upgrade torch torchvision --break-system-packages
-```
-
-### # [10. 방화벽 설정](#목차)
-
-```bash
-systemctl start ufw
-systemctl enable ufw
-yes | ufw enable
-ufw default deny
-ufw allow 22/tcp 
-ufw allow 7777/tcp 
-
-perl -pi -e "s/#Port 22/Port 7777/g" /etc/ssh/sshd_config
-echo "AddressFamily inet" >> /etc/ssh/sshd_config
-systemctl restart ssh
-```
 
 
 ## ## 아래 부분을 진행 하기 전에 위 사항들이 적용 될 수 있게 재부팅을 진행 합니다.
