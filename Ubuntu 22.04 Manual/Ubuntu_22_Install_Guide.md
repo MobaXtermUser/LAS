@@ -345,65 +345,6 @@ source /root/.bashrc
 apt-get -y install libcudnn8 libcudnn8-dev
 ```
 
-### # [16. 딥러닝 패키지 설치](#목차)
-#### ## JupyterHub는 마지막 설정이 동일하여 마지막에 같이 서술하였습니다.
-#### ## 마지막 설정에 사용되는 파일은 Git에 LAS 밑에 존재합니다.
-
-```bash
-# 딥러닝 패키지 (R, R-Server, JupyterHub) 를 설치 합니다.
-# JupyterHub에 작업 중 사용되는 파일들은 LISR에 존재하므로 git을 통해 Pull 하고 사용해야 합니다.
-
-## R,R-studio install
-apt-get -y install r-base 
-apt-get -y install gdebi-core 
-
-wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb
-dpkg -i libssl1.1_1.1.0g-2ubuntu4_amd64.deb
-
-wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2022.07.1-554-amd64.deb
-yes | gdebi rstudio-server-2022.07.1-554-amd64.deb
-
-## JupyterHub install
-pip3 install --upgrade jupyterhub jupyterlab notebook 
-
-apt-get -y purge nodejs libnode72
-
-curl -fsSL https://deb.nodesource.com/setup_16.x | bash - 
-apt-get -y install nodejs default-jre 
-npm install -g configurable-http-proxy 
-
-## Pycharm install
-snap install pycharm-community --classic
-```
-
-
-```bash
-## JupyterHub 마무리 작업.
-mkdir /etc/jupyterhub
-jupyterhub --generate-config -f                               /etc/jupyterhub/jupyterhub_config.py 
-sed -i '625a c.JupyterHub.port = 8000'                        /etc/jupyterhub/jupyterhub_config.py
-sed -i '656a c.JupyterHub.proxy_class = 'jupyterhub.proxy.ConfigurableHTTPProxy'' /etc/jupyterhub/jupyterhub_config.py
-sed -i '1260a c.Authenticator.admin_users = {"temp_id"}'        /etc/jupyterhub/jupyterhub_config.py
-sed -i '976a c.Spawner.default_url = '/lab''                  /etc/jupyterhub/jupyterhub_config.py
-
-sed -i '1450a c.LocalAuthenticator.create_system_users = True' /etc/jupyterhub/jupyterhub_config.py
-sed -i '1451a c.Authenticator.add_user_cmd = ['adduser', '--force-badname', '-q', '--gecos', '""', '--disabled-password']' /etc/jupyterhub/jupyterhub_config.py
-
-## jupyterhub service 설정 파일 복사를 위해 git 복사
-git clone https://github.com/dasandata/LAS
-mv /root/LAS/jupyterhub.service /lib/systemd/system/
-mv /root/LAS/jupyterhub         /etc/init.d/
-
-chmod 777 /lib/systemd/system/jupyterhub.service 
-chmod 755 /etc/init.d/jupyterhub 
-
-systemctl daemon-reload 
-systemctl enable jupyterhub.service 
-systemctl restart jupyterhub.service 
-
-R CMD BATCH /root/LAS/r_jupyterhub.R 
-```
-
 ### ===== 서버 전용 설치 진행 순서 ===== 
 
 ### # [17. 서버 전용 MSM 설치](#목차)
