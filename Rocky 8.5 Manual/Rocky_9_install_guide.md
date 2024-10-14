@@ -160,18 +160,10 @@ cat /etc/selinux/config | grep "SELINUX=disabled"
 #### ## 필요없는 서비스를 disable 합니다 (장비에 따라 존재하지 않는 서비스도 있습니다.)
 
 ```bash
-yum -y update
-yum install -y epel-release
-yum install -y ethtool pciutils openssh mlocate nfs-utils xauth firefox nautilus wget bind-utils
-yum install -y tcsh tree lshw tmux kernel-headers kernel-devel gcc make gcc-c++ snapd yum-utils
-yum install -y cmake ntfs-3g dstat perl perl-CPAN perl-core net-tools openssl-devel git-lfs vim
+yum -y update && yum install -y epel-release && yum install -y ethtool pciutils openssh mlocate nfs-utils xauth firefox nautilus wget bind-utils && yum install -y tcsh tree lshw tmux kernel-headers kernel-devel gcc make gcc-c++ snapd yum-utils && yum install -y cmake ntfs-3g dstat perl perl-CPAN perl-core net-tools openssl-devel git-lfs vim
 
 # GUI 패키지 설치
-yum -y groupinstall "Server with GUI"
-yum -y groupinstall "Graphical Administration Tools" 
-yum -y groups install "Development Tools" 
-yum install -y glibc-devel libstdc++ libstdc++-devel
-yum install -y htop ntfs-3g figlet smartmontools
+yum -y groupinstall "Server with GUI" && yum -y groupinstall "Graphical Administration Tools"  && yum -y groups install "Development Tools"  && yum install -y glibc-devel libstdc++ libstdc++-devel && yum install -y htop ntfs-3g figlet smartmontools
 
 #불필요한 서비스 disable
 systemctl disable bluetooth.service
@@ -187,7 +179,7 @@ systemctl disable cups.service
 systemctl disable cups-browsed.service
 
 ## IPMI가 있는 서버의 경우 ipmitool을 설치 합니다.
-# yum install -y ipmitool
+yum install -y ipmitool
 ```
 
 
@@ -232,22 +224,6 @@ date
 hwclock 
 ```
 
-### # [8. 파이썬 설치](#목차)
-
-```bash
-# Rocky linux 의 경우 3.6버전의 devel만 사용 2버전은 사용X
-yum -y install python3-devel
-```
-
-### # [9. 파이썬 패키지 설치](#목차)
-
-```bash
-# Python 3.6에 사용할 패키지 설치
-python3 -m pip install --upgrade pip 
-python3 -m pip install numpy scipy nose matplotlib pandas keras 
-python3 -m pip install --upgrade tensorflow
-python3 -m pip install torch torchvision 
-```
 
 
 ### # [10. 방화벽 설정](#목차)
