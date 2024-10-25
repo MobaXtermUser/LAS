@@ -214,6 +214,27 @@ date
 hwclock
 ```
 
+### # [10. 방화벽 설정](#목차)
+
+```bash
+systemctl start ufw
+systemctl enable ufw
+yes | ufw enable
+ufw default deny
+ufw allow 22/tcp 
+ufw allow 7777/tcp 
+
+## R Server port
+ufw allow 8787/tcp 
+
+## JupyterHub port
+ufw allow 8000/tcp
+
+perl -pi -e "s/#Port 22/Port 7777/g" /etc/ssh/sshd_config
+echo "AddressFamily inet" >> /etc/ssh/sshd_config
+systemctl restart sshd
+```
+
 
 ## ## 아래 부분을 진행 하기 전에 위 사항들이 적용 될 수 있게 재부팅을 진행 합니다.
 
