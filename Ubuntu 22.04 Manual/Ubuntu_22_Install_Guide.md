@@ -138,9 +138,9 @@ rm -rf /etc/cloud/  /var/lib/cloud/
 
 ```bash
 # 기존 저장소 주소보다 빠른 mirror.kakao.com 으로 변경
-perl -pi -e 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list.d/ubuntu.sources
-perl -pi -e 's/security.ubuntu.com/mirror.kakao.com/g'   /etc/apt/sources.list.d/ubuntu.sources
-cat /etc/apt/sources.list.d/ubuntu.sources | grep -v "#\|^$"
+perl -pi -e 's/kr.archive.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
+perl -pi -e 's/security.ubuntu.com/mirror.kakao.com/g'   /etc/apt/sources.list
+cat /etc/apt/sources.list | grep -v "#\|^$"
 ```
 
 ### # [5. 기본 패키지 설치](#목차)
