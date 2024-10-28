@@ -251,7 +251,7 @@ reboot
 ### # [9. CUDA,CUDNN Repo 설치](#목차)
 
 ```bash
-# 사용할 CUDA 버전을 선택합니다. (22.04는 11.7만 지원됨)
+# 사용할 CUDA 버전을 선택합니다.
 select CUDAV in 12-4; do echo "Select CUDA Version : $CUDAV" ; break; done
 
 # 자세한 Ubuntu 버전을 변수로 선언합니다.
