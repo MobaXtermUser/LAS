@@ -214,7 +214,7 @@ date
 hwclock
 ```
 
-### # [10. 방화벽 설정](#목차)
+### # [8. 방화벽 설정](#목차)
 
 ```bash
 systemctl start ufw
@@ -246,9 +246,9 @@ reboot
 ***
 
 ### ===== GPU 버전 설치 진행 순서 ===== 
-#### ### 아래 13 ~ 16 항목의 경우 Nvidia-GPU가 존재할 경우 진행 합니다.
+#### ### 아래 9 ~ 11 항목의 경우 Nvidia-GPU가 존재할 경우 진행 합니다.
 
-### # [13. CUDA,CUDNN Repo 설치](#목차)
+### # [9. CUDA,CUDNN Repo 설치](#목차)
 
 ```bash
 # 사용할 CUDA 버전을 선택합니다. (22.04는 11.7만 지원됨)
@@ -266,7 +266,7 @@ sh -c 'echo "deb https://developer.download.nvidia.com/compute/cuda/repos/'$OS'/
 apt-get update
 ```
 
-### # [14. CUDA 설치 및 PATH 설정](#목차)
+### # [10. CUDA 설치 및 PATH 설정](#목차)
 
 ```bash
 # CUDA 설치
@@ -289,7 +289,7 @@ source /etc/profile
 source /root/.bashrc
 ```
 
-### # [15. CUDNN 설치](#목차)
+### # [11. CUDNN 설치](#목차)
 
 ```bash
 # Ubuntu 22.04 는 CUDA 11 버전부터 지원하여 libcudnn8 버전만 설치 가능
@@ -298,7 +298,7 @@ apt-get -y install libcudnn8 libcudnn8-dev
 
 ### ===== 서버 전용 설치 진행 순서 ===== 
 
-### # [17. 서버 전용 MSM 설치](#목차)
+### # [12. 서버 전용 MSM 설치](#목차)
 #### ## RAID DISK 관리 Tool인 Mega RAID Manager 를 설치 합니다. (RAID Card가 있을경우 사용 합니다.)
 
 ```bash
@@ -321,7 +321,7 @@ cd
 
 ### ===== Dell 서버 전용 설치 순서 =====
 
-### # [18. Dell 전용 OMSA설치](#목차)
+### # [13. Dell 전용 OMSA설치](#목차)
 #### ## Dell 서버의 경우 원격 제어를 위한 OMSA (OpenManage Server Administrator) 를 설치 합니다.
 
 ```bash
