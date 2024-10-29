@@ -50,7 +50,7 @@ then
         until [ $CUDAV != ' ' ]
         do
           PS3='Please Select one : '
-          select CUDAV in 11-7 No-GPU ; do echo "Select CUDA Version : $CUDAV" ; break; done
+          select CUDAV in 12-4 No-GPU ; do echo "Select CUDA Version : $CUDAV" ; break; done
         done
         echo $CUDAV > /root/cudaversion.txt
       else if [ $OS = "ubuntu2004" ]
