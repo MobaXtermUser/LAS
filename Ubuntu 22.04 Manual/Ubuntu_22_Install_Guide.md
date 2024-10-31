@@ -150,7 +150,7 @@ cat /etc/apt/sources.list | grep -v "#\|^$"
 ```bash
 apt-get update
 apt-get -y install vim nfs-common rdate xauth firefox gcc make tmux wget figlet net-tools
-apt-get -y install xfsprogs ntfs-3g aptitude lvm2 curl npm plocate util-linux-extra
+apt-get -y install xfsprogs ntfs-3g aptitude lvm2 dstat curl npm mlocate 
 apt-get -y install dconf-editor gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
 apt-get -y install libzmq3-dev libcurl4-openssl-dev libxml2-dev snapd ethtool htop dnsutils
 apt-get -y install smartmontools
