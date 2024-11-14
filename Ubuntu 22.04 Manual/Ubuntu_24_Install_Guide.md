@@ -252,7 +252,7 @@ reboot
 
 ```bash
 # 사용할 CUDA 버전을 선택합니다. (22.04는 11.7만 지원됨)
-select CUDAV in 12-4; do echo "Select CUDA Version : $CUDAV" ; break; done
+select CUDAV in 12-6; do echo "Select CUDA Version : $CUDAV" ; break; done
 
 # 자세한 Ubuntu 버전을 변수로 선언합니다.
 OS=$(lsb_release -isr |  tr -d "." | sed -e '{N;s/\n//}' | tr '[A-Z]' '[a-z]')
@@ -293,7 +293,7 @@ source /root/.bashrc
 
 ```bash
 # Ubuntu 22.04 는 CUDA 11 버전부터 지원하여 libcudnn8 버전만 설치 가능
-apt-get -y install libcudnn8 libcudnn8-dev
+apt-get -y install libcudnn9-cuda-12 libcudnn9-dev-cuda-12
 ```
 
 ### ===== 서버 전용 설치 진행 순서 ===== 
